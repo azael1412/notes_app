@@ -7,32 +7,7 @@ import 'package:notes_app/notes/screens/notes_screen.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//agregar animaciones basicas
-//implementar hive
-//implementar shared_preferences//ya
-// nota el color de texto de las notas debe ser blancos
-//checar sobre actualizaciones de app
-//checar efecto material para los listile
-//agregar para que no cambie de posicion de pantalla
-//agregar sombras al show
 
-//https://stackoverflow.com/questions/50619848/how-to-change-text-color-of-appbar-icon-color-of-fab-universally-using-theme
-//checar sobre temas ligth y dark
-//manejador de tema con provider
-//guardar el estado del tema en shared preferences
-//quitar sombras cuando se ponga en modo oscuro->importante
-//implemenar que no se cambie de pantalla//ya
-//ocupar toda la pantalla onfiguracion//ya
-//implementar boton de cambio de tema//ya
-//implmentar hive
-//implementar scroll infinito y search delegate,
-//checar notificaciones locales y con firebase
-//agregar imagen de entrada con pageview y splashscreen
-//login
-//agregar animaciones en todo lo que se pueda checar animaciones
-//checa rx_dart y stream an future
-//agregar politicas de privacidad si se agrega el login
-//wb_sunny icons ligth mode an dark mode brightness_2
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
@@ -44,7 +19,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   final SharedPreferences sharedPreferences;
   const MyApp({Key key, this.sharedPreferences}) : super(key: key);
   @override
