@@ -14,6 +14,9 @@ class ThemeBloc with ChangeNotifier {
   ThemeData get currentTheme =>
       _isDarkMode ? _getThemeDark() : _getThemeLight();
 
+  ThemeData get getThemeDark => _getThemeDark();
+  ThemeData get getThemeLight => _getThemeLight();
+
   bool get isDarkMode => _isDarkMode;
 
   void setDarkMode(bool b) {
