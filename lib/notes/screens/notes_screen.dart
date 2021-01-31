@@ -2,192 +2,85 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:notes_app/notes/blocs/button_bloc.dart';
+import 'package:notes_app/notes/blocs/note_bloc.dart';
 import 'package:notes_app/notes/blocs/theme_bloc.dart';
 
-import 'package:notes_app/notes/screens/add_note_screen.dart';
+import 'package:notes_app/notes/models/note_model.dart' as notemodel;
+// import 'package:notes_app/notes/resources/note_provider.dart';
+
+// import 'package:notes_app/notes/screens/create_update_note_screen.dart';
+import 'package:notes_app/routes/app_routes.dart';
 // import 'package:notes_app/notes/screens/setting_screen.dart';
-import 'package:notes_app/notes/widgets/navigation_header.dart';
-import 'package:notes_app/notes/widgets/note.dart';
-import 'package:notes_app/notes/widgets/float_buttom.dart';
+import 'package:notes_app/widgets/navigation_header.dart';
+import 'package:notes_app/widgets/note.dart' as noteWidget;
+import 'package:notes_app/widgets/float_button.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
-class ListNote {
-  final String title;
-  final String body;
-  final String date;
-  final Color backgroundColor;
-  ListNote({this.title, this.body, this.date, this.backgroundColor});
-}
+// class ListNote {
+//   final String title;
+//   final String body;
+//   final String date;
+//   final Color backgroundColor;
+//   ListNote({this.title, this.body, this.date, this.backgroundColor});
+// }
 
-class NotesScreen extends StatefulWidget {
-  NotesScreen({Key key}) : super(key: key);
+class NotesScreen extends StatelessWidget {
+  const NotesScreen({Key key}) : super(key: key);
 
   @override
-  _NotesScreenState createState() => _NotesScreenState();
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(create: (_) => ButtonBloc(), child: Notes());
+  }
 }
 
-class _NotesScreenState extends State<NotesScreen> {
-  bool isGoingDown = true;
+class Notes extends StatefulWidget {
+  Notes({Key key}) : super(key: key);
+
+  @override
+  _NotesState createState() => _NotesState();
+}
+
+class _NotesState extends State<Notes> {
+  NoteBloc _noteBloc = NoteBloc();
+  // bool isGoingDown = true;
   GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  List<ListNote> _listNotes = [
-    ListNote(
-        title: "Dart Dart",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.amberAccent),
-    ListNote(
-        title: "Java java",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.red),
-    ListNote(
-        title: "ANgular js",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.blue),
-    ListNote(
-        title: "React Native",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.greenAccent),
-    ListNote(
-        title: "Jango Python",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(255, 214, 51, 1)),
-    ListNote(
-        title: "Ruby on Rails",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(78, 51, 255, 1)),
-    ListNote(
-        title: "Dart Dart",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.amberAccent),
-    ListNote(
-        title: "Java java",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.red),
-    ListNote(
-        title: "ANgular js",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.blue),
-    ListNote(
-        title: "React Native",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.greenAccent),
-    ListNote(
-        title: "Jango Python",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(255, 214, 51, 1)),
-    ListNote(
-        title: "Ruby on Rails",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(78, 51, 255, 1)),
-    ListNote(
-        title: "Dart Dart",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.amberAccent),
-    ListNote(
-        title: "Java java",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.red),
-    ListNote(
-        title: "ANgular js",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.blue),
-    ListNote(
-        title: "React Native",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.greenAccent),
-    ListNote(
-        title: "Jango Python",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(255, 214, 51, 1)),
-    ListNote(
-        title: "Ruby on Rails",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(78, 51, 255, 1)),
-    ListNote(
-        title: "Dart Dart",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.amberAccent),
-    ListNote(
-        title: "Java java",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.red),
-    ListNote(
-        title: "ANgular js",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.blue),
-    ListNote(
-        title: "React Native",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Colors.greenAccent),
-    ListNote(
-        title: "Jango Python",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(255, 214, 51, 1)),
-    ListNote(
-        title: "Ruby on Rails",
-        body:
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-        date: "06/12/2020",
-        backgroundColor: Color.fromRGBO(78, 51, 255, 1))
-  ];
+  ScrollController _scrollController;
+
+  Map<dynamic, dynamic> _notesBoxMap;
 
   @override
   initState() {
     // SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
+    _noteBloc.initBox();
+    _scrollController = ScrollController();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels <= 0.0) {
+        Provider.of<ButtonBloc>(context, listen: false).show = true;
+      } else {
+        Provider.of<ButtonBloc>(context, listen: false).show = false;
+      }
+    });
+    _updateNoteList();
+    // print("entre");
   }
 
   @override
   void dispose() {
     // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     super.dispose();
+    _noteBloc.dispose();
+    _scrollController.dispose();
+  }
+
+  _updateNoteList() {
+    setState(() {
+      _notesBoxMap = _noteBloc.readNotesBox();
+    });
   }
 
   @override
@@ -213,17 +106,15 @@ class _NotesScreenState extends State<NotesScreen> {
                 child: Consumer<ThemeBloc>(
                   builder: (context, value, child) {
                     return NavigationHeader(
-                        actionLeft: () {
-                          value.setDarkMode(!value.isDarkMode);
-                          final snackBar = SnackBar(
-                              elevation: 2.0,
-                              duration: Duration(seconds: 2),
-                              content: Text(value.isDarkMode
-                                  ? 'Modo Oscuro Activado!'
-                                  : 'Modo Claro Activado!'));
-                          // Find the Scaffold in the widget tree and use it to show a SnackBar.
-                          Scaffold.of(context).showSnackBar(snackBar);
-                        },
+                        actionLeft: () => value.setDarkMode(!value.isDarkMode),
+                        // final snackBar = SnackBar(
+                        //     elevation: 2.0,
+                        //     duration: Duration(seconds: 2),
+                        //     content: Text(value.isDarkMode
+                        //         ? 'Modo Oscuro Activado!'
+                        //         : 'Modo Claro Activado!'));
+                        // Scaffold.of(context).showSnackBar(snackBar);
+                        // },
                         title: "Mis Notas",
                         iconLeft: value.isDarkMode
                             ? Icons.wb_sunny
@@ -233,55 +124,112 @@ class _NotesScreenState extends State<NotesScreen> {
                   },
                 ),
               ),
-              Expanded(
-                child: NotificationListener<ScrollNotification>(
-                    onNotification: (onScrollNotification) {
-                      if (onScrollNotification is ScrollUpdateNotification) {
-                        if (onScrollNotification.scrollDelta <= 0.0) {
-                          if (!isGoingDown) setState(() => isGoingDown = true);
-                          // print("1");
-                        } else {
-                          if (isGoingDown) setState(() => isGoingDown = false);
-                          // print("2");
-                        }
-                      }
-                      return false;
-                    },
-                    child: _buildList(context)),
-              ),
+              ChangeNotifierProvider(
+                  create: (_) => ButtonBloc(), child: _buildList())
+              // _buildList(),
             ],
           ),
         ),
-        floatingActionButton: FloatButton(isGoingDown, () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddNoteScreen()),
-          );
+        floatingActionButton: FloatButton(() {
+          Navigator.pushNamed(context, AppRoutes.createOrUpdateNote,
+              arguments: CreateOrUpdateNoteArguments(
+                  note: null,
+                  updateList: _updateNoteList,
+                  scaffoldKey: scaffoldKey));
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context) => CreateOrUpdateNoteScreen(
+          //             updateNoteList: _updateNoteList,
+          //             scaffoldKey: scaffoldKey,
+          //           )),
+          // );
         }));
   }
 
-  Widget _buildList(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: StaggeredGridView.countBuilder(
-          physics: BouncingScrollPhysics(),
-          itemCount: _listNotes.length,
-          crossAxisCount: 4,
-          mainAxisSpacing: 1,
-          crossAxisSpacing: 1,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: new Note(
-                  title: _listNotes[index].title,
-                  body: _listNotes[index].body,
-                  date: _listNotes[index].date,
-                  backgroundColor: _listNotes[index].backgroundColor,
-                  scaffoldKey: scaffoldKey),
-            );
-          },
-          staggeredTileBuilder: (index) =>
-              StaggeredTile.count(index == 2 ? 4 : 2, 2)),
+  Widget _allNotes() {
+    _notesBoxMap = _noteBloc.readNotesBox();
+    var keysNotesBoxDB = _notesBoxMap?.keys;
+    if (_noteBloc.box.length > 0) {
+      return Expanded(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: StaggeredGridView.countBuilder(
+              physics: BouncingScrollPhysics(),
+              itemCount: _notesBoxMap?.length,
+              controller: _scrollController,
+              crossAxisCount: 4,
+              mainAxisSpacing: 1,
+              crossAxisSpacing: 1,
+              itemBuilder: (context, index) {
+                var keynoteBox = keysNotesBoxDB.elementAt(index);
+                var notesBox = _notesBoxMap[keynoteBox];
+                final note = notemodel.Note(
+                    id: index,
+                    title: notesBox.title,
+                    description: notesBox.description,
+                    date: notesBox.date,
+                    color: notesBox.color);
+                return Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: new noteWidget.Note(
+                    noteModel: note,
+                    // index: index,
+                    // title: notesBox.title,
+                    // description: notesBox.description,
+                    // date: notesBox.date ?? '07-01-2021',
+                    // backgroundColor:
+                    //     notesBox.color == null ? "#FFD700" : notesBox.color,
+                    scaffoldKey: scaffoldKey,
+                    updateNoteList: _updateNoteList,
+                  ),
+                );
+              },
+              staggeredTileBuilder: (index) =>
+                  StaggeredTile.count(index == 2 ? 4 : 2, 2)),
+        ),
+      );
+    } else {
+      return Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('assets/img/no_data.png'),
+            SizedBox(height: 80),
+            Text(
+              "Agrega una nota para comenzar",
+              style: Theme.of(scaffoldKey.currentContext).textTheme.caption,
+            )
+          ],
+        ),
+      );
+      // return Center(child: Text("No hay datos"));
+    }
+  }
+
+  _buildList() {
+    // return Container();
+    return FutureBuilder(
+      future: _noteBloc.initBox(),
+      builder: (context, snapshot) {
+        /*switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return Container();
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+          case ConnectionState.active:
+            return _allNotes();
+          case ConnectionState.done:
+            return _allNotes();
+          default:
+            Container();
+        }*/
+        if (snapshot.hasData) {
+          return _allNotes();
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
